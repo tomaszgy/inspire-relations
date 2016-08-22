@@ -1,4 +1,3 @@
-#!/usr/bin/env sh
 # -*- coding: utf-8 -*-
 #
 # This file is part of INSPIRE.
@@ -23,10 +22,15 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
+from inspire_relations.model_builder import GraphModelBuilder
+from inspire_relations.model.graph_models import JournalGraphModel
+from inspire_relations.model.nodes import (PublisherNode)
+from inspire_relations.model.relations import (PublishedBy)
 
-# pydocstyle inspire_relations && \
-# isort -rc -c -df **/*.py && \
-# check-manifest --ignore ".travis-*" && \
-# sphinx-build -qnNW docs docs/_build/html && \
-# python setup.py test && \
-# sphinx-build -qnNW -b doctest docs docs/_build/doctest
+journals = GraphModelBuilder(model_type=JournalGraphModel)
+
+
+@journals.element_processor("publisher")
+def published_by(graph_model, element):
+    publisher = PublisherNode(publisher_name=element)
+    graph_model.add_outgoing_relation(PublishedBy, publisher)

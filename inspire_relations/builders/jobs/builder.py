@@ -1,4 +1,3 @@
-#!/usr/bin/env sh
 # -*- coding: utf-8 -*-
 #
 # This file is part of INSPIRE.
@@ -23,10 +22,22 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
+from inspire_relations.model_builder import GraphModelBuilder
+from inspire_relations.model.graph_models import JobGraphModel
+from inspire_relations.model.nodes import (ExperimentNode, InstitutionNode)
+from inspire_relations.model.relations import (IsAboutExperiment, OfferedBy)
 
-# pydocstyle inspire_relations && \
-# isort -rc -c -df **/*.py && \
-# check-manifest --ignore ".travis-*" && \
-# sphinx-build -qnNW docs docs/_build/html && \
-# python setup.py test && \
-# sphinx-build -qnNW -b doctest docs docs/_build/doctest
+
+jobs = GraphModelBuilder(model_type=JobGraphModel)
+
+
+@jobs.element_processor('institution', musts=['recid'])
+def offered_by(graph_model, element):
+    institution = InstitutionNode(recid=element['recid'])
+    graph_model.add_outgoing_relation(OfferedBy, institution)
+
+
+@jobs.element_processor('experiments', musts=['recid'])
+def is_about_experiment(graph_model, element):
+    experiment = ExperimentNode(recid=element['recid'])
+    graph_model.add_outgoing_relation(IsAboutExperiment, experiment)
