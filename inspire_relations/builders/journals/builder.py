@@ -1,4 +1,3 @@
-#!/usr/bin/env sh
 # -*- coding: utf-8 -*-
 #
 # This file is part of INSPIRE.
@@ -23,10 +22,35 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
+from inspire_relations.graph_representation import (
+    make_node,
+    GraphModelBuilder
+    )
+from inspire_relations.model_updaters import (
+    add_outgoing_relation,
+    set_property_of_central_node,
+    set_uid
+)
+from inspire_relations.model.nodes import (
+    JournalNode,
+    PublisherNode
+    )
+from inspire_relations.model.relations import PUBLISHED_BY
 
-# pydocstyle inspire_relations && \
-# isort -rc -c -df **/*.py && \
-# check-manifest --ignore ".travis-*" && \
-# sphinx-build -qnNW docs docs/_build/html && \
-# python setup.py test && \
-# sphinx-build -qnNW -b doctest docs docs/_build/doctest
+journals = GraphModelBuilder(central_node_type=JournalNode)
+
+
+@journals.element_processor('control_number')
+def recid(model, element):
+    set_property_of_central_node(model,
+                                 'recid', str(element))
+
+    set_uid(model,
+            uid=JournalNode.generate_uid(recid=element))
+
+
+@journals.element_processor("publisher")
+def published_by(model, element):
+    publisher = make_node(PublisherNode, name=element)
+    add_outgoing_relation(model,
+                          PUBLISHED_BY, publisher)

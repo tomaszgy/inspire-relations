@@ -1,4 +1,3 @@
-#!/usr/bin/env sh
 # -*- coding: utf-8 -*-
 #
 # This file is part of INSPIRE.
@@ -23,10 +22,7 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
+from __future__ import absolute_import, print_function
 
-# pydocstyle inspire_relations && \
-# isort -rc -c -df **/*.py && \
-# check-manifest --ignore ".travis-*" && \
-# sphinx-build -qnNW docs docs/_build/html && \
-# python setup.py test && \
-# sphinx-build -qnNW -b doctest docs docs/_build/doctest
+class MissingUid(NameError):
+    pass

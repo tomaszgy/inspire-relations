@@ -34,15 +34,10 @@ cache:
   - pip
 
 env:
-  - REQUIREMENTS=lowest
-  - REQUIREMENTS=release
   - REQUIREMENTS=devel
 
 python:
   - "2.7"
-  - "3.3"
-  - "3.4"
-  - "3.5"
 
 before_install:
   - "travis_retry pip install --upgrade pip setuptools py"

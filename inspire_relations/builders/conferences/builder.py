@@ -1,4 +1,3 @@
-#!/usr/bin/env sh
 # -*- coding: utf-8 -*-
 #
 # This file is part of INSPIRE.
@@ -23,10 +22,24 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
+from inspire_relations.graph_representation import GraphModelBuilder
+from inspire_relations.model.nodes import ConferenceNode
+from inspire_relations.model_updaters import (
+    set_property_of_central_node,
+    set_uid
+    )
 
-# pydocstyle inspire_relations && \
-# isort -rc -c -df **/*.py && \
-# check-manifest --ignore ".travis-*" && \
-# sphinx-build -qnNW docs docs/_build/html && \
-# python setup.py test && \
-# sphinx-build -qnNW -b doctest docs docs/_build/doctest
+
+conferences = GraphModelBuilder(central_node_type=ConferenceNode)
+
+@conferences.element_processor('control_number')
+def recid(model, element):
+    set_property_of_central_node(model,
+                                 'recid', str(element))
+
+    set_uid(model,
+            uid=ConferenceNode.generate_uid(recid=element))
+
+
+# TODO: missing conference series (problem with umlauts)
+# (also, in the data conference series name is not coralated with its number)

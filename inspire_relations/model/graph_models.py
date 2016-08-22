@@ -1,4 +1,3 @@
-#!/usr/bin/env sh
 # -*- coding: utf-8 -*-
 #
 # This file is part of INSPIRE.
@@ -23,10 +22,29 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
+from __future__ import absolute_import, print_function
 
-# pydocstyle inspire_relations && \
-# isort -rc -c -df **/*.py && \
-# check-manifest --ignore ".travis-*" && \
-# sphinx-build -qnNW docs docs/_build/html && \
-# python setup.py test && \
-# sphinx-build -qnNW -b doctest docs docs/_build/doctest
+from inspire_relations.graph_representation import GraphModelType
+
+from inspire_relations.model import nodes
+
+class ConferenceGraphModel(GraphModelType):
+    central_node_type = nodes.ConferenceNode
+
+class ExperimentGraphModel(GraphModelType):
+    central_node_type = nodes.ExperimentNode
+
+class InstitutionGraphModel(GraphModelType):
+    central_node_type = nodes.InstitutionNode
+
+class JobGraphModel(GraphModelType):
+    central_node_type = nodes.JobNode
+
+class JournalGraphModel(GraphModelType):
+    central_node_type = nodes.JournalNode
+
+class LiteratureGraphModel(GraphModelType):
+    central_node_type = nodes.LiteratureNode
+
+class PersonGraphModel(GraphModelType):
+    central_node_type = nodes.PersonNode

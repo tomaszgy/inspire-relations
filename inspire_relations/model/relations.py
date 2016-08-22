@@ -1,4 +1,3 @@
-#!/usr/bin/env sh
 # -*- coding: utf-8 -*-
 #
 # This file is part of INSPIRE.
@@ -23,10 +22,24 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
+AFFILIATED_WITH = 'AFFILIATED_WITH'
+AUTHORED_BY = 'AUTHORED_BY'
+AT = 'AT'
+CONTRIBUTED_TO = 'CONTRIBUTED_TO'
+HIRED_AS = 'HIRED_AS'
+IN_THE_FIELD_OF = 'IN_THE_FIELD_OF'
+IN_THE_RANK_OF = 'IN_THE_RANK_OF'
+IS_ABOUT_EXPERIMENT = 'IS_ABOUT_EXPERIMENT'
+LOCATED_IN = 'LOCATED_IN'
+OFFERED_BY = 'OFFERED_BY'
+PUBLISHED_BY = 'PUBLISHED_BY'
+REFERS_TO = 'REFERS_TO'
+REPRESENTS = 'REPRESENTS'
+SUPERVISED_BY = 'SUPERVISED_BY'
+WRITTEN_BY = 'WRITTEN_BY'
 
-# pydocstyle inspire_relations && \
-# isort -rc -c -df **/*.py && \
-# check-manifest --ignore ".travis-*" && \
-# sphinx-build -qnNW docs docs/_build/html && \
-# python setup.py test && \
-# sphinx-build -qnNW -b doctest docs docs/_build/doctest
+def get_start_node(relation):
+    return relation[0]
+
+def get_end_node(relation):
+    return [relation[1]]
